@@ -131,6 +131,25 @@ export default Ember.Service.extend({
     });
   },
 
+  geolocate(always) {
+    always = typeOf(always) === 'function' ? always : function() {};
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      let options = {
+        success(position) {
+          resolve(position);
+        },
+        error(error) {
+          reject(error);
+        },
+        not_supported() {
+          throw new Error('Your browser does not support geolocation.');
+        },
+        always
+      };
+      GMaps.prototype.utils.geolocate(options);
+    });
+  },
+
   autocompletes: Ember.computed({
     get() {
       let autocompletes = {};

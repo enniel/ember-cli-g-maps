@@ -110,6 +110,19 @@ export default Ember.Route.extend({
       heatmapOpacity: 1
     });
 
+    this.get('gMap')
+      .geolocate()
+      .then(geolocate => {
+        let marker = {
+          id: 'jdlksadvefajs22',
+          lat: geolocate.coords.latitude,
+          lng: geolocate.coords.longitude,
+          infoWindow: { content: '<p class="-nmb">Are you here</p>', visible: true }
+        };
+        controller.get('markers').addObject(marker);
+      })
+      .catch((err) => console.error(err));
+
     // window.setInterval(() => {
     //   let lat = controller.get('lat')+ 0.5;
     //   controller.set('lat', lat);
