@@ -132,7 +132,10 @@ export default Ember.Service.extend({
   },
 
   geolocate(always) {
-    always = typeOf(always) === 'function' ? always : function() {};
+    always = typeOf(always) === 'undefined' ? function() {} : always;
+    if(typeOf(always) !== 'function') {
+      throw new Error('Input argument must be type of function.');
+    }
     return new Ember.RSVP.Promise(function(resolve, reject) {
       let options = {
         success(position) {
